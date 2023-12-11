@@ -106,8 +106,8 @@ def camera2plane(
 # Load the object images
 
 # data_dir = '../data/slipper'
-# data_dir = '../data/frog'
-data_dir = '../data/bottle'
+data_dir = '../data/frog'
+# data_dir = '../data/bottle'
 
 imgs = []
 color_imgs = []
@@ -144,13 +144,17 @@ I_diffs = imgs - np.repeat(I_shadow[np.newaxis, ...], num_imgs, axis=0)
 # In[3]:
 # Define the horizontal and vertical unobstructed regions
 
-v_xstart, v_ystart = 200, 700
-v_xend, v_yend = 500, 1100
+# v_xstart, v_ystart = 200, 700
+# v_xend, v_yend = 500, 1100
+v_xstart, v_ystart = 0, 250
+v_xend, v_yend = 300, 800
 v_h = v_xend - v_xstart
 v_w = v_yend - v_ystart
 
-h_xstart, h_ystart = 900, 600
-h_xend, h_yend = 1000, 1100
+# h_xstart, h_ystart = 900, 600
+# h_xend, h_yend = 1000, 1100
+h_xstart, h_ystart = 660, 200
+h_xend, h_yend = 768, 830
 h_h = h_xend - h_xstart
 h_w = h_yend - h_ystart
 
@@ -183,10 +187,10 @@ for frame in I_diffs:
 h_shadow_edges = {}
 v_shadow_edges = {}
 vis = True
-vis_freq = 20
+vis_freq = 10
 
-hv_height = 800  # slipper
-# hv_height = 450  # frog
+# hv_height = 800  # slipper
+hv_height = 450  # frog
 
 for i in range(num_imgs):
     v_locs = v_locations[i].astype(np.float64)
