@@ -2,12 +2,12 @@ from cp_hw6 import computeIntrinsic, computeExtrinsic, pixel2ray
 import os
 import glob
 import numpy as np
-
+import cv2
 # Example for running intrinsic and extrinsic calibration on provided structured light examples
 
 # Input data locations
 baseDir = '../data'  # data directory
-objName = 'bottle'  # object name (should correspond to a dir in data)
+objName = 'cup_holder2'  # object name (should correspond to a dir in data)
 seqName = 'v1'  # sequence name (subdirectory of object)
 calName = 'self_calib_lr'  # calibration sourse (also a dir in data)
 image_ext = 'jpg'  # file extension for images
