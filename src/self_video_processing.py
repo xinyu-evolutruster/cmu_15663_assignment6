@@ -204,6 +204,7 @@ hv_height = 800  # slipper
 # cupboard
 frame2skip = [119, 122, 123, 125, 131, 134, 140, 146, 148, 151, 152, 154, 155, 158, 162,
               164, 169, 180, 182, 184, 185, 189, 195, 203, 205, 206, 211, 212, 215, 217, 221, 224, 229]
+# slipper
 # frame2skip = [92, 98, 115, 122, 146, 148, 149, 150, 151, 152, 154, 155, 157, 158, 161, 165, 169, 170, 171, 172, 173, 176, 177, 178, 180, 181, 182, 184, 185, 196, 197, 200, 201, 203, 210, 211, 212, 214, 215, 216,
 #               217, 218, 219, 224, 227, 228, 230, 231, 233, 236, 240, 241, 242, 244, 245, 249, 250, 251, 257, 259, 263, 267, 269, 271, 272, 273, 274, 276, 279, 281, 284, 287, 290, 291, 293, 296, 299, 301, 302, 304, 305, 307, 308]
 
@@ -283,7 +284,6 @@ n = np.array([0.0, 0.0, 1.0], dtype=np.float32)
 
 h_inters = {}
 for frame_idx, h_edge in h_shadow_edges.items():
-    # y1, y2 = 450, 700  # frog
     y1, y2 = 800, 1080
 
     # Compute the intersections in the horizontal plane coordinate
@@ -297,7 +297,6 @@ for frame_idx, h_edge in h_shadow_edges.items():
 
 v_inters = {}
 for frame_idx, v_edge in v_shadow_edges.items():
-    # y1, y2 = 100, 450   # frog
     y1, y2 = 300, 800
 
     # Compute the intersections in the vertical plane coordinate
@@ -309,23 +308,6 @@ for frame_idx, v_edge in v_shadow_edges.items():
     v_inter2 = world2cam(v_inter2, R_v, t_v)
 
     v_inters[frame_idx] = np.array([v_inter1, v_inter2])
-
-# In[5]
-# Save an npz file
-reconstructed_points = {}
-for frame_idx in v_shadow_edges.keys():
-    P1, P2 = h_inters[frame_idx]
-    P3, P4 = v_inters[frame_idx]
-    reconstructed_points[frame_idx] = np.array([P1, P2, P3, P4])
-
-reconstructed_points = np.array(reconstructed_points, dtype=object)
-np.savez('./recon.npz', points=reconstructed_points)
-
-# In[5]:
-# read the npz file
-# recon = np.load('./recon.npz', allow_pickle=True)
-# pts = recon['points'].item()
-# print(pts[55])
 
 # In[6]:
 # Test: plot the horizontal and vertical shadow lines in 3D
@@ -365,11 +347,6 @@ for frame_idx in h_shadow_edges.keys():
     n /= np.linalg.norm(n)
 
     shadow_planes[frame_idx] = np.array([p1, n])
-
-# In[6]
-# Save an npz file
-np.savez('./shadow_plane.npz',
-         shadow_planes=np.array(shadow_planes, dtype=object))
 
 # In[7]:
 # Visualize shadow planes
@@ -475,7 +452,7 @@ print(pts[:, 2].max())
 print(pts[:, 2].min())
 
 mask = (pts[:, 2] > 0)
-mask = mask & (np.linalg.norm(pts, axis=1) < 700).astype(bool)
+mask = mask & (np.linalg.norm(pts, axis=1) < 650).astype(bool)
 mask = mask & ((np.linalg.norm(pts, axis=1) > 300).astype(bool))  # frog
 
 pts_filtered = pts[mask]
@@ -487,19 +464,19 @@ colors_small = colors[::5]
 rgb_colors_small = rgb_colors[::5, :]
 
 # In[9]:
-fig = plt.figure()
-ax = fig.add_subplot(projection='3d')
+# fig = plt.figure()
+# ax = fig.add_subplot(projection='3d')
 
-s = np.ones_like(colors) * 0.01
-ax.scatter(pts_small[:, 0], pts_small[:, 1], pts_small[:, 2],
-           s=0.05, c=colors_small, cmap='gray')
+# s = np.ones_like(colors) * 0.01
+# ax.scatter(pts_small[:, 0], pts_small[:, 1], pts_small[:, 2],
+#            s=0.05, c=colors_small, cmap='gray')
 
-ax.set_xlabel('X')
-ax.set_ylabel('Y')
-ax.set_zlabel('Z')
-set_axes_equal(ax)
+# ax.set_xlabel('X')
+# ax.set_ylabel('Y')
+# ax.set_zlabel('Z')
+# set_axes_equal(ax)
 
-plt.show()
+# plt.show()
 
 # In[10]:
 fig = plt.figure()
